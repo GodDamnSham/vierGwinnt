@@ -90,8 +90,10 @@ public class Service {
         while (row < 3) {
             int col = 0;
             while (col < 4) {
-                if (board[row][col] != 'ø' && board[row][col] == board[row + 1][col + 1] &&
-                        board[row][col] == board[row + 2][col + 2] && board[row][col] == board[row + 3][col + 3]) {
+                if (board[row][col] != 'ø'
+                        && board[row][col] == board[row + 1][col + 1]
+                        && board[row][col] == board[row + 2][col + 2]
+                        && board[row][col] == board[row + 3][col + 3]) {
                     return board[row][col];
                 }
                 col++;
@@ -111,12 +113,12 @@ public class Service {
         while (row < 3) {
             int col = 3;
             while (col < 7) {
-                //System.out.println("Checking row: " + row + ", col: " + col);
+                //System.out.println("row ", col: " + col);
                 if (board[row][col] != ' ' &&
                         board[row][col] == board[row + 1][col - 1] &&
                         board[row][col] == board[row + 2][col - 2] &&
                         board[row][col] == board[row + 3][col - 3]) {
-                    //System.out.println("Winning symbol found: " + board[row][col]);
+                    //System.out.println(board[row][col]);
                     return board[row][col];
                 }
                 col++;
@@ -126,44 +128,11 @@ public class Service {
         return ' ';
     }
 
-
-
     /**
-     * Method to check for the winner. hover over the board to find the 4 consecutive symbols
+     * check still empty
      * @param board giving the current board
-     * */
-    public char checkWinner(char[][] board) {
-
-        char vertical = this.checkVertical(board);
-        if(vertical=='X'){
-            return 'X';
-        }else if (vertical=='O'){
-            return 'O';
-        }
-
-        char horizontal = this.checkHorizontal(board);
-        if(horizontal=='X'){
-            return 'X';
-        }else if (horizontal=='O'){
-            return 'O';
-        }
-
-        char checkDiagonalWin = this.checkDiagonalWin(board);
-        if(checkDiagonalWin=='X'){
-            return 'X';
-        }else if (checkDiagonalWin=='O'){
-            return 'O';
-        }
-
-
-        char  checkTopRightDiagonalWin = this.checkTopRightDiagonalWin(board);
-        if(checkTopRightDiagonalWin=='X'){
-            return 'X';
-        }else if (checkTopRightDiagonalWin=='O'){
-            return 'O';
-        }
-
-        //check if board is full then Game over
+     */
+    private static Character getCharacter(char[][] board) {
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
                 if (board[row][col] == 'ø') {
@@ -172,9 +141,43 @@ public class Service {
                 }
             }
         }
+        return null;
+    }
+
+    /**
+     * Method to check for the winner. hover over the board to find the 4 consecutive symbols
+     * @param board giving the current board
+     * */
+    public char checkWinner(char[][] board) {
+
+        char vertical = this.checkVertical(board);
+        if(vertical=='X' || vertical=='O'){
+            return vertical;
+        }
+
+        char horizontal = this.checkHorizontal(board);
+        if(horizontal=='X'||horizontal=='O'){
+            return horizontal;
+        }
+
+        char checkDiagonalWin = this.checkDiagonalWin(board);
+        if(checkDiagonalWin=='X' || checkDiagonalWin=='O'){
+            return checkDiagonalWin;
+        }
+
+
+        char  checkTopRightDiagonalWin = this.checkTopRightDiagonalWin(board);
+        if(checkTopRightDiagonalWin=='X' || checkTopRightDiagonalWin=='O'){
+            return checkTopRightDiagonalWin;
+        }
+
+        //check if board is full then Game over
+        Character x = getCharacter(board);
+        if (x != null) return x;
 
         return 'T';
     }
+
 
     /**
      * @param board giving the current board

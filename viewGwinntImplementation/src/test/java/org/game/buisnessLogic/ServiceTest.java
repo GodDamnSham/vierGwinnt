@@ -1,6 +1,5 @@
 package org.game.buisnessLogic;
 
-import org.game.UI.BoardDesign;
 import org.game.entity.Player;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
