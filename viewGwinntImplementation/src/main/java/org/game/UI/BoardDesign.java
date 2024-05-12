@@ -8,7 +8,9 @@ public class BoardDesign {
         board = new char[6][7];
         initializeBoard();
     }
-
+    /**
+     * Initializing the board adding adding null symbol ø temporary
+     * */
     private void initializeBoard() {
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
@@ -16,7 +18,9 @@ public class BoardDesign {
             }
         }
     }
-
+    /**
+     * print the board after each update
+     * */
     public void printBoard() {
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
@@ -30,6 +34,9 @@ public class BoardDesign {
         System.out.println("\n");
     }
 
+    /**
+     * return current board
+     * */
     public char[][] getBoard() {
         return board;
     }

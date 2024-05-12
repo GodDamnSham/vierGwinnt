@@ -10,9 +10,9 @@ public class Service {
     public Service(){
         this.boardDesign = new BoardDesign();
     }
-/**
-* print the board
-*/
+    /**
+     * print the board
+     */
     public void printingTheBoard(){
         this.boardDesign.printBoard();
     }
@@ -81,63 +81,48 @@ public class Service {
         return ' ';
     }
 
-    //helper
-    public char checkDiagonalTopLeft(char[][] board) {
-        int countX = 0;
-        int count0 = 0;
-        for (int row = 0; row < 3; row++) {
-             countX = 0;
-             count0 = 0;
-            for (int col = 0; col < 4; col++) {
-                    char current = board[row + 1][col + 1];
-                    if (current == 'X') {
-                        countX++;
-                        count0 = 0;
-                    } else if (current == 'O') {
-                        count0++;
-                        countX = 0;
-                    } else {
-                        countX = 0;
-                        count0 = 0;
-                    }
-                    if (countX == 4) {
-                        return 'X';
-                    } else if (count0 == 4) {
-                        return 'O';
-                    }
+    /**
+     * check Top Left Diagonal win for the player added symbols
+     * @param board giving the current board
+     */
+    public char checkDiagonalWin(char[][] board) {
+        int row = 0;
+        while (row < 3) {
+            int col = 0;
+            while (col < 4) {
+                if (board[row][col] != 'ø' && board[row][col] == board[row + 1][col + 1] &&
+                        board[row][col] == board[row + 2][col + 2] && board[row][col] == board[row + 3][col + 3]) {
+                    return board[row][col];
                 }
+                col++;
             }
+            row++;
+        }
         return ' ';
     }
 
-    //helper
-    public char checkDiagonalTopRight(char[][] board) {
-        int countX = 0;
-        int count0 = 0;
-        for (int row = 0; row < 3; row++) {
-             countX = 0;
-             count0 = 0;
-            for (int col = 3; col < 7; col++) {
-                char current = board[row][col];
-                        if (board[row + 1][col - 1] == current) {
-                            if (current == 'X') {
-                                countX++;
-                                count0 = 0;
-                            } else if (current == '0') {
-                                count0++;
-                                countX = 0;
-                            }
-                        } else {
-                            countX = 0;
-                            count0 = 0;
-                        }
-                        if (countX == 4) {
-                            return 'X';
-                        } else if (count0 == 4) {
-                            return '0';
-                        }
-                    }
+
+    /**
+     * check Top Right Diagonal win for the player added symbols
+     * @param board giving the current board
+     */
+    public char checkTopRightDiagonalWin(char[][] board) {
+        int row = 0;
+        while (row < 3) {
+            int col = 3;
+            while (col < 7) {
+                //System.out.println("Checking row: " + row + ", col: " + col);
+                if (board[row][col] != ' ' &&
+                        board[row][col] == board[row + 1][col - 1] &&
+                        board[row][col] == board[row + 2][col - 2] &&
+                        board[row][col] == board[row + 3][col - 3]) {
+                    //System.out.println("Winning symbol found: " + board[row][col]);
+                    return board[row][col];
                 }
+                col++;
+            }
+            row++;
+        }
         return ' ';
     }
 
@@ -145,7 +130,8 @@ public class Service {
 
     /**
      * Method to check for the winner. hover over the board to find the 4 consecutive symbols
-     * @param board giving the current board*/
+     * @param board giving the current board
+     * */
     public char checkWinner(char[][] board) {
 
         char vertical = this.checkVertical(board);
@@ -162,31 +148,26 @@ public class Service {
             return 'O';
         }
 
-        //  diagonals top-left bottom-right
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 4; col++) {
-                if (board[row][col] != 'ø' && board[row][col] == board[row + 1][col + 1] &&
-                        board[row][col] == board[row + 2][col + 2] && board[row][col] == board[row + 3][col + 3]) {
-                    return board[row][col];
-                }
-            }
+        char checkDiagonalWin = this.checkDiagonalWin(board);
+        if(checkDiagonalWin=='X'){
+            return 'X';
+        }else if (checkDiagonalWin=='O'){
+            return 'O';
         }
 
-        //  diagonals top-right bottom-left
-        for (int row = 0; row < 3; row++) {
-            for (int col = 3; col < 7; col++) {
-                if (board[row][col] != 'ø' && board[row][col] == board[row + 1][col - 1] &&
-                        board[row][col] == board[row + 2][col - 2] && board[row][col] == board[row + 3][col - 3]) {
-                    return board[row][col];
-                }
-            }
-        }
 
+        char  checkTopRightDiagonalWin = this.checkTopRightDiagonalWin(board);
+        if(checkTopRightDiagonalWin=='X'){
+            return 'X';
+        }else if (checkTopRightDiagonalWin=='O'){
+            return 'O';
+        }
 
         //check if board is full then Game over
         for (int row = 0; row < 6; row++) {
             for (int col = 0; col < 7; col++) {
                 if (board[row][col] == 'ø') {
+                    //still empty places to play
                     return ' ';
                 }
             }
